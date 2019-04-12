@@ -1,12 +1,10 @@
-# Add these lines at the top of your views.py file
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
 from rest_framework import permissions, generics, status
 
 # Get the JWT settings, add these lines after the import/from lines
-from auth.serializers import TokenSerializer
+from .serializers import TokenSerializer
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -18,11 +16,9 @@ class LoginView(generics.CreateAPIView):
     """
     POST auth/login/
     """
-    # This permission class will overide the global permission
+    # This permission class will override the global permission
     # class setting
     permission_classes = (permissions.AllowAny,)
-
-    queryset = User.objects.all()
 
     def post(self, request, *args, **kwargs):
         username = request.data.get("username", "")
