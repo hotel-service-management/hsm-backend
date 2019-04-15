@@ -70,7 +70,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # method below.
         return self._authenticate_credentials(request, token)
 
-    def _authenticate_credentials(request, token):
+    def _authenticate_credentials(self, request, token):
         """
         Try to authenticate the given credentials. If authentication is
         successful, return the user and token. If not, throw an error.
@@ -91,4 +91,4 @@ class JWTAuthentication(authentication.BaseAuthentication):
             msg = 'This user has been deactivated.'
             raise exceptions.AuthenticationFailed(msg)
 
-        return user, token
+        return (user, token)

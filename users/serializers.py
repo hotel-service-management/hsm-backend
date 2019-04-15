@@ -33,6 +33,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 # Login
 class LoginSerializer(serializers.Serializer):
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
     email = serializers.CharField(max_length=255)
     username = serializers.CharField(max_length=255, read_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
@@ -92,6 +98,7 @@ class LoginSerializer(serializers.Serializer):
             'token': user.token
         }
 
+
 # User update profile
 class UserSerializer(serializers.ModelSerializer):
     """Handles serialization and deserialization of User objects."""
@@ -108,7 +115,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'token',)
+        fields = ('email', 'username', 'password', 'first_name', 'last_name', 'gender', 'address', 'token',)
 
         # The `read_only_fields` option is an alternative for explicitly
         # specifying the field with `read_only=True` like we did for password

@@ -2,6 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import UserCreationForm, UserChangeForm
 from .models import User
+from django.contrib.auth.models import Permission
+
+# Add permission
+admin.site.register(Permission)
 
 
 class CustomUserAdmin(UserAdmin):
@@ -24,7 +28,13 @@ class CustomUserAdmin(UserAdmin):
         ),
         (
             'Permissions', {
-                'fields': ('is_staff', 'is_active')
+                'fields': ('is_staff', 'is_active',)
+            }
+        ),
+        (
+            'Dangerous Zone', {
+                'fields': ('is_superuser',),
+                'classes': ('collapse',)
             }
         ),
     )
