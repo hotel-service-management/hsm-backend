@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Permission
+
 from .forms import UserCreationForm, UserChangeForm
 from .models import User
-from django.contrib.auth.models import Permission
 
 # Add permission
 admin.site.register(Permission)
@@ -12,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
     model = User
-    list_display = ['email', 'username', ]
+    list_display = ['email', 'username', 'first_name', 'last_name', ]
 
     fieldsets = (
         (
@@ -43,7 +44,6 @@ class CustomUserAdmin(UserAdmin):
         (
             None,
             {
-                'classes': ('wide',),
                 'fields': (
                     'username', 'email', 'password1', 'password2',
                 )
@@ -53,7 +53,6 @@ class CustomUserAdmin(UserAdmin):
         (
             'Personal Info',
             {
-                'classes': ('wide',),
                 'fields': (
                     'first_name', 'last_name', 'gender', 'address',
                 )
@@ -62,10 +61,14 @@ class CustomUserAdmin(UserAdmin):
         (
             'Permission',
             {
-                'classes': ('wide',),
                 'fields': ('is_staff', 'is_active')
             }
-        )
+        ),
+        (
+            'Dangerous Zone', {
+                'fields': ('is_superuser',),
+            }
+        ),
     )
 
 

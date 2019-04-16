@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # Local
     'users.apps.UsersConfig',
+    'booking',
+    'payment',
 ]
 
 MIDDLEWARE = [

@@ -84,7 +84,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # A timestamp representing when this object was created.
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # A timestamp reprensenting when this object was last updated.
+    # A timestamp representing when this object was last updated.
     updated_at = models.DateTimeField(auto_now=True)
 
     # More fields required by Django when specifying a custom user model.
