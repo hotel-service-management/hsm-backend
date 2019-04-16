@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'booking',
     'payment',
+    'review',
 ]
 
 MIDDLEWARE = [
