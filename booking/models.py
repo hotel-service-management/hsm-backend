@@ -20,5 +20,8 @@ class Room(models.Model):
 
 
 class BookingDetail(models.Model):
+    class Meta:
+        db_table = 'booking_detail'
+
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
