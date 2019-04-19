@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'hsm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hms',
+        'NAME': 'hsm',
         'USER': 'postgres',
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
