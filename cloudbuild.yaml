@@ -34,8 +34,3 @@ steps:
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=asia-southeast1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=hsm'
-# push images to Google Container Registry with tags
-images: [
-   'gcr.io/kmitl-hsm/hsm-backend:$COMMIT_SHA',
-   'gcr.io/kmitl-hsm/hsm-backend:latest'
-  ]
