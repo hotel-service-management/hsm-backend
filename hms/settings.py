@@ -24,7 +24,7 @@ SECRET_KEY = '*h-wu^i$=*kwn*&)m$7!t7x7z&3eecmpliqa6jh)z4@ygrk9+z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'hotel.wiput.me', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'hsm.wiput.me', 'localhost']
 
 # Application definition
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'booking',
     'payment',
     'review',
+    'order',
 ]
 
 MIDDLEWARE = [
