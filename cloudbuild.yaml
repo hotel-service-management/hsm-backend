@@ -15,6 +15,13 @@ steps:
    '.'
   ]
 #step 3
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: [
+   '-c',
+   'docker push gcr.io/kmitl-hsm/hsm-backend:latest || exit 0'
+  ]
+#step 4
 - name: 'gcr.io/cloud-builders/kubectl'
   args: [
    'set',
