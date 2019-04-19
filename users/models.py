@@ -2,10 +2,10 @@ from datetime import timedelta, datetime
 
 import jwt
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
-from hsm import settings
+from hsm.settings import development
 
 
 class UserManager(BaseUserManager):
@@ -148,6 +148,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         token = jwt.encode({
             'id': self.pk,
             'exp': int(dt.strftime('%s'))
-        }, settings.SECRET_KEY, algorithm='HS256')
+        }, development.SECRET_KEY, algorithm='HS256')
 
         return token.decode('utf-8')
