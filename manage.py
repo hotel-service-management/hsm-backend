@@ -3,7 +3,13 @@ import os
 import sys
 
 if __name__ == '__main__':
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hsm.settings.development')
+    PRODUCTION = os.environ.get('ENV') == 'production'
+
+    if PRODUCTION:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hsm.settings.production')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hsm.settings.development')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
