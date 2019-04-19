@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
             raise TypeError('Superusers must have a password.')
 
         user = self.create_user(username, email, password)
-        # user.is_superuser = True
+        user.is_superuser = True
         user.is_staff = True
         user.save()
 
