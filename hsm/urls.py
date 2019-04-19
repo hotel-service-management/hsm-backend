@@ -10,8 +10,3 @@ urlpatterns = [
     path('api/auth/', include('users.urls')),
     # path('api/register/', RegistrationAPIView.as_view(), name='register'),
 ]
-
-if not settings.DEBUG:
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-    urlpatterns += staticfiles_urlpatterns()
