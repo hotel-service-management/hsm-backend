@@ -24,19 +24,3 @@ class ServiceList(models.Model):
 
     class Meta:
         db_table = 'service_list'
-
-
-class Food(models.Model):
-    name = models.CharField(max_length=255)
-    price = models.FloatField()
-
-    class Meta:
-        db_table = 'food'
-
-
-class FoodList(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    food = models.ManyToManyField(Food)
-
-    class Meta:
-        db_table = 'food_list'
