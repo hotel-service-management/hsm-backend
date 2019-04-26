@@ -48,7 +48,6 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
     class Meta:
         db_table = 'users'
 
@@ -110,7 +109,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.email
 
-
     @property
     def token(self):
         """
@@ -128,7 +126,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         Typically this would be the user's first and last name. Since we do
         not store the user's real name, we return their username instead.
         """
-        return self.username
+        return '%s %s' % (self.first_name, self.last_name)
 
     def get_short_name(self):
         """

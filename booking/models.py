@@ -4,10 +4,10 @@ from users.models import User
 
 
 class Booking(models.Model):
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
     num_person = models.IntegerField(null=False, default=1, verbose_name='Person Count')
-    stay_date = models.IntegerField(null=False)
+    stay_date = models.IntegerField(null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -32,5 +32,5 @@ class BookingDetail(models.Model):
         verbose_name = 'Booking Detail'
         verbose_name_plural = 'Booking Details'
 
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    booking = models.ForeignKey(Booking, related_name='detail', on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name='room', on_delete=models.CASCADE)
