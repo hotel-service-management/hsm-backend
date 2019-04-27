@@ -1,11 +1,12 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 
-from booking.models import Booking, Room
-from booking.serializers import BookingSerializer, RoomSerializer
+from booking.models import Booking, Room, BookingDetail
+from booking.serializers import BookingSerializer, RoomSerializer, BookingDetailSerializer
 
 
-class BookingView(generics.RetrieveAPIView, generics.DestroyAPIView):
+# Booking
+class BookingView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.UpdateAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -46,7 +47,30 @@ class BookingsView(generics.ListAPIView, generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RoomView(generics.RetrieveAPIView, generics.DestroyAPIView):
+# Booking Detail
+class BookingDetailView(generics.CreateAPIView):
+    queryset = BookingDetail.objects.all()
+    serializer_class = BookingDetailSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+
+        data = request.data
+
+        if not kwargs.get('booking'):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        data['booking'] = kwargs.get('booking')
+
+        serializer = BookingDetailSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Room
+class RoomView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.UpdateAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -69,7 +93,7 @@ class RoomView(generics.RetrieveAPIView, generics.DestroyAPIView):
         return Response({'success': True}, status=200)
 
 
-class RoomsView(generics.ListAPIView):
+class RoomsView(generics.ListAPIView, generics.CreateAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -78,3 +102,10 @@ class RoomsView(generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = RoomSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = RoomSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

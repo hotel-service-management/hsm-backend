@@ -12,6 +12,11 @@ class RoomSerializer(serializers.ModelSerializer):
 class BookingDetailSerializer(serializers.ModelSerializer):
     room = RoomSerializer(read_only=True)
 
+    room_id = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all(), source='room', write_only=True)
+
+    def create(self, validated_data):
+        return BookingDetail.objects.create(**validated_data)
+
     class Meta:
         model = BookingDetail
         fields = '__all__'
