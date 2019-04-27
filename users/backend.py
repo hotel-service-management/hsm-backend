@@ -82,6 +82,10 @@ class JWTAuthentication(authentication.BaseAuthentication):
             msg = 'Invalid authentication. Could not decode token.'
             raise exceptions.AuthenticationFailed(msg)
 
+        except jwt.ExpiredSignature:
+            msg = 'Expired token.'
+            raise exceptions.AuthenticationFailed(msg)
+
         try:
             user = User.objects.get(pk=payload['user_id'])
         except User.DoesNotExist:
