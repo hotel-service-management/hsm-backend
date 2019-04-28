@@ -10,6 +10,9 @@ class Booking(models.Model):
     stay_date = models.IntegerField(null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        db_table = 'bookings'
+
     def __str__(self):
         return "(%s) %s" % (self.id, self.owner)
 

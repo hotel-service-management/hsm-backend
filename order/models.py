@@ -7,7 +7,7 @@ class Order(models.Model):
     booking = models.ForeignKey(BookingDetail, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'order'
+        db_table = 'orders'
 
 
 class Service(models.Model):
@@ -15,7 +15,7 @@ class Service(models.Model):
     price = models.FloatField()
 
     class Meta:
-        db_table = 'service'
+        db_table = 'services'
 
 
 class ServiceList(models.Model):

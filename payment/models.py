@@ -6,7 +6,7 @@ from booking.models import Booking
 
 
 class Payment(models.Model):
-    payment_date = models.DateField(null=date.today)
+    payment_date = models.DateField(default=date.today)
     amount = models.FloatField()
 
     payment_type_choice = (('01', 'Cash'), ('02', 'Credit Card'))
@@ -18,6 +18,9 @@ class Payment(models.Model):
 
     # A timestamp representing when this object was last updated.
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'payments'
 
     def __str__(self):
         return "(%s/%s) %s" % (self.id, self.booking.id, self.amount)

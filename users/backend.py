@@ -83,7 +83,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed(msg)
 
         except jwt.ExpiredSignature:
-            msg = 'Expired token.'
+            msg = 'Expired token'
             raise exceptions.AuthenticationFailed(msg)
 
         try:

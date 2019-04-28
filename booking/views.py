@@ -12,13 +12,6 @@ class BookingView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.Up
     permission_classes = (permissions.IsAuthenticated,)
 
     def retrieve(self, request, *args, **kwargs):
-        """
-        Retrieve single Booking object
-        :param request:
-        :param args:
-        :param kwargs:
-        :return: Response
-        """
         queryset = self.get_object()
 
         serializer = BookingSerializer(queryset, many=False)
@@ -76,13 +69,6 @@ class RoomView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.Updat
     permission_classes = (permissions.IsAuthenticated,)
 
     def retrieve(self, request, *args, **kwargs):
-        """
-        Retrieve single Room object
-        :param request:
-        :param args:
-        :param kwargs:
-        :return: Response
-        """
         queryset = self.get_object()
 
         serializer = RoomSerializer(queryset, many=False)
