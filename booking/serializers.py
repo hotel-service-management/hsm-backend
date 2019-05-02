@@ -4,6 +4,8 @@ from booking.models import Booking, BookingDetail, Room
 
 
 class RoomSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source='get_type_display', read_only=True)
+
     class Meta:
         model = Room
         fields = '__all__'
