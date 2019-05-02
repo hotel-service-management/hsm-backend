@@ -11,7 +11,11 @@ class Order(models.Model):
 
 
 class Service(models.Model):
-    type = models.CharField(max_length=255)
+    type_choices = (
+        ('01', 'food'),
+        ('02', 'service')
+    )
+    type = models.CharField(max_length=255, default='01', choices=type_choices, null=True)
     price = models.FloatField()
 
     class Meta:

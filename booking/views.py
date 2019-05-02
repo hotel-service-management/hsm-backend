@@ -6,6 +6,9 @@ from booking.serializers import BookingSerializer, RoomSerializer, BookingDetail
 
 
 # Booking
+from users.models import User
+
+
 class BookingView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.UpdateAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
@@ -28,7 +31,7 @@ class BookingsView(generics.ListAPIView, generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().filter(owner=User.objects.get(email=request.user))
         serializer = BookingSerializer(queryset, many=True)
         return Response(serializer.data)
 

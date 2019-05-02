@@ -25,6 +25,12 @@ class BookingDetailSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     detail = BookingDetailSerializer(many=True, read_only=True)
 
+    def to_representation(self, instance):
+        representation = super(BookingSerializer, self).to_representation(instance)
+        representation['start_date'] = instance.start_date.strftime("%d %B %Y")
+        representation['end_date'] = instance.end_date.strftime("%d %B %Y")
+        return representation
+
     class Meta:
         model = Booking
         fields = '__all__'

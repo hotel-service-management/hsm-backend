@@ -8,5 +8,5 @@ urlpatterns = [
     path('user', UserRetrieveUpdateAPIView.as_view(), name='user_info'),
     url(r'^register/?$', RegistrationAPIView.as_view(), name='register'),
     path('login/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('login/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]

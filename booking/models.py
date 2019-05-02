@@ -37,3 +37,13 @@ class BookingDetail(models.Model):
 
     booking = models.ForeignKey(Booking, related_name='detail', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='room', on_delete=models.CASCADE)
+
+
+class Privilege(models.Model):
+    booking = models.ForeignKey(Booking, related_name='booking', on_delete=models.CASCADE, default=None)
+    title = models.CharField(max_length=255)
+    detail = models.TextField(blank=True, null=True)
+    status = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'privilege'
