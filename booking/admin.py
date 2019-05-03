@@ -16,7 +16,7 @@ class BookingAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             'Start/End Date', {
-                'fields': ('start_date', 'end_date', 'stay_date',)
+                'fields': ('start_date', 'end_date',)
             }
         ),
         (
