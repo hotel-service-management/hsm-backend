@@ -7,7 +7,6 @@ class Booking(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     num_person = models.IntegerField(null=False, default=1, verbose_name='Person Count')
-    stay_date = models.IntegerField(null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
