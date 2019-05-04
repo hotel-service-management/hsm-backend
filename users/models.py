@@ -71,6 +71,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     address = models.TextField(null=False)
 
+    phone_number = models.CharField(max_length=10, null=True)
+
     # When a user no longer wishes to use our platform, they may try to delete
     # their account. That's a problem for us because the data we collect is
     # valuable to us and we don't want to delete it. We
