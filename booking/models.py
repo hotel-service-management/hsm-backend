@@ -9,6 +9,13 @@ class Booking(models.Model):
     num_person = models.IntegerField(null=False, default=1, verbose_name='Person Count')
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    status_choices = (
+        (0, 'Unconfirmed'),
+        (1, 'Confirmed'),
+        (2, 'Checked In')
+    )
+    status = models.SmallIntegerField(choices=status_choices, verbose_name='Booking Status', default=0)
+
     class Meta:
         db_table = 'bookings'
 

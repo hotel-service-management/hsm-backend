@@ -5,8 +5,8 @@ from django.shortcuts import render
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 
-from order.models import Order
-from order.serializers import OrderSerializer
+from order.models import Order, Service
+from order.serializers import OrderSerializer, ServiceSerializer
 
 
 class OrdersView(generics.RetrieveAPIView):
@@ -40,4 +40,18 @@ class OrderView(generics.RetrieveAPIView, generics.UpdateAPIView):
         queryset = self.get_object()
 
         serializer = OrderSerializer(queryset, many=False)
+        return Response(serializer.data)
+
+
+class ServiceView(generics.RetrieveAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'booking__id'
+    lookup_url_kwarg = 'pk'
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(booking__id=kwargs.get('pk'))
+
+        serializer = OrderSerializer(queryset, many=True)
         return Response(serializer.data)
