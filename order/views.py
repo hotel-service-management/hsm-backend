@@ -43,6 +43,18 @@ class OrderView(generics.RetrieveAPIView, generics.UpdateAPIView):
         return Response(serializer.data)
 
 
+class ServicesView(generics.ListAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+
+        serializer = OrderSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
 class ServiceView(generics.RetrieveAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

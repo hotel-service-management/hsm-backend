@@ -5,6 +5,8 @@ from order.models import Order, Service
 
 
 class ServiceSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source='get_type_display', read_only=True)
+    
     class Meta:
         model = Service
         fields = '__all__'

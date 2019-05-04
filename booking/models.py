@@ -10,9 +10,9 @@ class Booking(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     status_choices = (
-        (0, 'Unconfirmed'),
-        (1, 'Confirmed'),
-        (2, 'Checked In')
+        (0, 'Reserved'),
+        (1, 'Checked In'),
+        (2, 'Checked Out')
     )
     status = models.SmallIntegerField(choices=status_choices, verbose_name='Booking Status', default=0)
 
