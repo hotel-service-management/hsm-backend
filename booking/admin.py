@@ -60,7 +60,7 @@ admin.site.register(BookingDetail, BookingDetailAdmin)
 # Register Room
 
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ['id', 'floor', 'type', 'price', ]
+    list_display = ['id', 'floor', 'type', 'price', 'room_number', ]
     list_per_page = 10
 
     search_fields = ['room_number']

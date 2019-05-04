@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from booking.models import Booking, BookingDetail, Room
+from booking.models import Booking, BookingDetail, Room, Privilege
 
 
 class RoomSerializer(serializers.ModelSerializer):
@@ -35,4 +35,12 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
+        fields = '__all__'
+
+
+class PrivilegeSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source='get_type_display', read_only=True)
+
+    class Meta:
+        model = Privilege
         fields = '__all__'

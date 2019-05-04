@@ -1,9 +1,8 @@
-from rest_framework import generics, status, permissions
+from rest_framework import generics, status, permissions, filters
 from rest_framework.response import Response
 
-from booking.models import Booking, Room, BookingDetail
-from booking.serializers import BookingSerializer, RoomSerializer, BookingDetailSerializer
-
+from booking.models import Booking, Room, BookingDetail, Privilege
+from booking.serializers import BookingSerializer, RoomSerializer, BookingDetailSerializer, PrivilegeSerializer
 
 # Booking
 from users.models import User
@@ -98,3 +97,16 @@ class RoomsView(generics.ListAPIView, generics.CreateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Privilege
+class PrivilegeView(generics.RetrieveAPIView):
+    queryset = Privilege.objects.all().select_related('booking')
+    serializer_class = PrivilegeSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(booking__id=kwargs.get('pk'))
+
+        serializer = PrivilegeSerializer(queryset, many=True)
+        return Response(serializer.data)
