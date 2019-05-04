@@ -45,7 +45,7 @@ class BookingDetail(models.Model):
     room = models.ForeignKey(Room, related_name='room', on_delete=models.CASCADE)
 
     def __str__(self):
-        return "(%s %s) %s" %(self.booking_id, self.booking.owner, self.room.room_number)
+        return "(%s %s) %s" % (self.booking_id, self.booking.owner, self.room.room_number)
 
 
 class Privilege(models.Model):
@@ -53,6 +53,12 @@ class Privilege(models.Model):
     title = models.CharField(max_length=255)
     detail = models.TextField(blank=True, null=True)
     status = models.BooleanField(default=False, verbose_name='Used ?')
+
+    type_choice = (
+        (0, 'Wifi'),
+        (1, 'Breakfast')
+    )
+    type = models.SmallIntegerField(null=True, choices=type_choice)
 
     class Meta:
         db_table = 'privilege'
