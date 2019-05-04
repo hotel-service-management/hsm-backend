@@ -25,7 +25,8 @@ class Order(models.Model):
     service = models.ManyToManyField(Service)
 
     def __str__(self):
-        return "Booking #%s %s - %s" % (self.booking.booking_id, self.booking.booking.owner, self.booking.room.room_number)
+        return "Booking #%s %s - %s" % (
+            self.booking.booking_id, self.booking.booking.owner, self.booking.room.room_number)
 
     class Meta:
         db_table = 'orders'

@@ -1,9 +1,11 @@
 from django.contrib import admin
 
-from booking.models import Booking, BookingDetail, Room
-
+from booking.models import Booking, BookingDetail, Room, Privilege
 
 # Register Booking
+from order.models import Order
+
+
 class BookingInline(admin.StackedInline):
     model = BookingDetail
     extra = 0
@@ -32,8 +34,24 @@ class BookingAdmin(admin.ModelAdmin):
 admin.site.register(Booking, BookingAdmin)
 
 
+class PrivilegeInline(admin.StackedInline):
+    model = Privilege
+    extra = 1
+
+
+class OrderInline(admin.StackedInline):
+    model = Order
+    extra = 0
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 class BookingDetailAdmin(admin.ModelAdmin):
-    pass
+    inlines = [PrivilegeInline, OrderInline]
 
 
 admin.site.register(BookingDetail, BookingDetailAdmin)

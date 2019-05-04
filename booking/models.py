@@ -42,10 +42,10 @@ class BookingDetail(models.Model):
 
 
 class Privilege(models.Model):
-    booking = models.ForeignKey(Booking, related_name='booking', on_delete=models.CASCADE, default=None)
+    booking = models.ForeignKey(BookingDetail, related_name='booking_detail', on_delete=models.CASCADE, default=None)
     title = models.CharField(max_length=255)
     detail = models.TextField(blank=True, null=True)
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=False, verbose_name='Used ?')
 
     class Meta:
         db_table = 'privilege'
