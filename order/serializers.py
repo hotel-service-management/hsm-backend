@@ -6,14 +6,14 @@ from order.models import Order, Service
 
 class ServiceSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source='get_type_display', read_only=True)
-    
+
     class Meta:
         model = Service
         fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    booking_detail_id = serializers.PrimaryKeyRelatedField(queryset=BookingDetail.objects.all(), source='booking',
+    booking_detail_id = serializers.PrimaryKeyRelatedField(queryset=BookingDetail.objects.all(), source='booking_detail',
                                                            write_only=True)
 
     service = ServiceSerializer(many=True, read_only=True)

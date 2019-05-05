@@ -21,12 +21,12 @@ class Service(models.Model):
 
 
 class Order(models.Model):
-    booking = models.ForeignKey(BookingDetail, on_delete=models.CASCADE)
+    booking_detail = models.ForeignKey(BookingDetail, on_delete=models.CASCADE)
     service = models.ManyToManyField(Service)
 
     def __str__(self):
         return "Booking #%s %s - %s" % (
-            self.booking.booking_id, self.booking.booking.owner, self.booking.room.room_number)
+            self.booking_detail.booking_id, self.booking_detail.booking.owner, self.booking_detail.room.room_number)
 
     class Meta:
         db_table = 'orders'
