@@ -44,6 +44,12 @@ class BookingDetail(models.Model):
     booking = models.ForeignKey(Booking, related_name='detail', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='room', on_delete=models.CASCADE)
 
+    def start_date(self):
+        return self.booking.start_date
+
+    def end_date(self):
+        return self.booking.end_date
+
     def __str__(self):
         return "(%s %s) %s" % (self.booking_id, self.booking.owner, self.room.room_number)
 
