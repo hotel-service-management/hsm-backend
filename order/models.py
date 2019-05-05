@@ -24,6 +24,9 @@ class Order(models.Model):
     booking = models.ForeignKey(BookingDetail, on_delete=models.CASCADE)
     service = models.ManyToManyField(Service)
 
+    def total_price(self):
+        return sum([i.price for i in self.service.all()])
+
     def __str__(self):
         return "Booking #%s %s - %s" % (
             self.booking.booking_id, self.booking.booking.owner, self.booking.room.room_number)
