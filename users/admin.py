@@ -29,7 +29,7 @@ class CustomUserAdmin(UserAdmin):
         ),
         (
             'Permissions', {
-                'fields': ('is_staff', 'is_active',)
+                'fields': ('is_staff', 'is_active', 'groups')
             }
         ),
         (
@@ -61,7 +61,7 @@ class CustomUserAdmin(UserAdmin):
         (
             'Permission',
             {
-                'fields': ('is_staff', 'is_active')
+                'fields': ('is_staff', 'is_active', 'groups')
             }
         ),
         (
