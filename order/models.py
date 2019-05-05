@@ -23,6 +23,7 @@ class Service(models.Model):
 class Order(models.Model):
     booking_detail = models.ForeignKey(BookingDetail, on_delete=models.CASCADE)
     service = models.ManyToManyField(Service)
+    total_price = models.FloatField(default=0)
 
     def __str__(self):
         return "Booking #%s %s - %s" % (
