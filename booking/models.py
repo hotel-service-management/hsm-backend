@@ -19,6 +19,12 @@ class Booking(models.Model):
     class Meta:
         db_table = 'bookings'
 
+    def nights(self):
+        return (self.end_date - self.start_date).days
+
+    def total_price(self):
+        return sum([i.room.price * self.nights() for i in BookingDetail.objects.all().filter(booking=self.id)])
+
     def __str__(self):
         return "(%s) %s" % (self.id, self.owner)
 
@@ -49,6 +55,12 @@ class BookingDetail(models.Model):
 
     def end_date(self):
         return self.booking.end_date
+
+    def nights(self):
+        return (self.end_date() - self.start_date()).days
+
+    def total_price(self):
+        return self.room.price * self.nights()
 
     def __str__(self):
         return "(%s %s) %s" % (self.booking_id, self.booking.owner, self.room.room_number)
