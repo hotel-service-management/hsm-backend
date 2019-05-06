@@ -25,9 +25,6 @@ class Order(models.Model):
     service = models.ManyToManyField(Service)
     total_price = models.FloatField(default=0)
 
-    def total_price(self):
-        return sum([i.price for i in self.service.all()])
-
     def __str__(self):
         return "Booking #%s %s - %s" % (
             self.booking_detail.booking_id, self.booking_detail.booking.owner, self.booking_detail.room.room_number)
