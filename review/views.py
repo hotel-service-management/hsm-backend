@@ -37,7 +37,7 @@ class ReviewsView(generics.ListAPIView, generics.CreateAPIView):
         data = request.data
         booking_id = data.pop('booking_id')
 
-        serializer = ReviewSerializer(data=request.data)
+        serializer = ReviewSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
 

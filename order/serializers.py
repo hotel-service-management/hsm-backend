@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from booking.models import BookingDetail
-from booking.serializers import BookingDetailSerializer
+# from booking.serializers import BookingDetailSerializer
 from order.models import Order, Service
 
 
@@ -18,7 +18,7 @@ class OrderSerializer(serializers.ModelSerializer):
                                                            source='booking_detail',
                                                            write_only=True)
 
-    booking_detail = BookingDetailSerializer(read_only=True)
+    # booking_detail = BookingDetailSerializer(read_only=True)
 
     service = ServiceSerializer(many=True, read_only=True)
     service_id = serializers.PrimaryKeyRelatedField(queryset=Service.objects.all(), source='service',

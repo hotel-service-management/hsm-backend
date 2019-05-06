@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from booking.models import Booking, BookingDetail, Room, Privilege
+from order.serializers import OrderSerializer
 from review.serializers import ReviewSerializer
 
 
@@ -16,6 +17,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
     room = RoomSerializer(read_only=True)
 
     room_id = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all(), source='room', write_only=True)
+    order_set = OrderSerializer(read_only=True, many=True)
 
     def create(self, validated_data):
         return BookingDetail.objects.create(**validated_data)
