@@ -6,6 +6,8 @@ from order.models import Order, Service
 
 
 class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'booking', 'total_price']
+
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }
