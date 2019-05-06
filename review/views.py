@@ -49,4 +49,4 @@ class ReviewsView(generics.ListAPIView, generics.CreateAPIView):
             booking.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': serializer.errors}, status=status.HTTP_200_OK)
