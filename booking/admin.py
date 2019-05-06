@@ -24,6 +24,7 @@ class OrderInline(admin.StackedInline):
 class BookingAdmin(admin.ModelAdmin):
     list_display = ['id', 'owner', 'start_date', 'end_date', 'nights', 'total_price', 'num_person', 'status']
     list_per_page = 10
+    list_filter = ['status', 'start_date', 'end_date']
     list_editable = ['status']
 
     fieldsets = (
