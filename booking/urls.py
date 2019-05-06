@@ -10,5 +10,4 @@ urlpatterns = [
     path('room/', RoomsView.as_view(), name='rooms'),
     path('room/<int:pk>/', RoomView.as_view(), name='room'),
     path('privilege/<int:pk>/', PrivilegeView.as_view(), name='privilege'),
-
 ]

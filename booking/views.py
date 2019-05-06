@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import generics, status, permissions, filters
 from rest_framework.response import Response
 
@@ -87,7 +89,13 @@ class RoomsView(generics.ListAPIView, generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        start_date = request.query_params['start_date']
+        end_date = request.query_params['end_date']
+
+        booked = set(values['detail__room_id'] for values in Booking.objects.filter(
+            start_date__lte=start_date, end_date__gte=end_date).values(
+            'detail__room_id'))
+        queryset = self.get_queryset().exclude(id__in=booked)
         serializer = RoomSerializer(queryset, many=True)
         return Response(serializer.data)
 
