@@ -24,8 +24,6 @@ class OrderInline(admin.StackedInline):
 class BookingAdmin(admin.ModelAdmin):
     list_display = ['id', 'owner', 'start_date', 'end_date', 'nights', 'total_price', 'num_person', 'status']
     list_per_page = 10
-
-    readonly_fields = ['id', 'owner', 'start_date', 'end_date', 'num_person']
     list_editable = ['status']
 
     fieldsets = (
@@ -42,6 +40,11 @@ class BookingAdmin(admin.ModelAdmin):
     )
 
     inlines = [BookingInline]
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['id', 'owner', 'start_date', 'end_date', 'num_person']
+        return list()
 
 class BookingDetailAdmin(admin.ModelAdmin):
     list_display = ['id', 'booking', 'room', 'start_date', 'end_date', 'nights', 'total_price']
