@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
         ),
         (
             'Personal Info', {
-                'fields': ('first_name', 'last_name', 'gender', 'address')
+                'fields': ('first_name', 'last_name', 'gender', 'address', 'phone_number')
             }
         ),
         (
@@ -76,5 +76,6 @@ class CustomUserAdmin(UserAdmin):
         if not request.user.is_superuser and obj != auth.get_user(request):
             return ['username']
         return []
+
 
 admin.site.register(User, CustomUserAdmin)
