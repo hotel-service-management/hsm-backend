@@ -1,5 +1,6 @@
 from django.db import models
 
+from review.models import Review
 from users.models import User
 
 
@@ -15,6 +16,7 @@ class Booking(models.Model):
         (2, 'Checked Out')
     )
     status = models.SmallIntegerField(choices=status_choices, verbose_name='Booking Status', default=0)
+    review = models.OneToOneField(Review, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         db_table = 'bookings'

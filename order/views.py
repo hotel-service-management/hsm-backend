@@ -25,7 +25,7 @@ class OrdersView(generics.RetrieveAPIView, generics.CreateAPIView):
 
         try:
             order = Order.objects.create(
-                booking_detail=BookingDetail.objects.all().get(pk=data['booking_detail_id']))
+                booking_detail=BookingDetail.objects.all().get(pk=data['booking_detail_id']), total_price=data['total_price'])
             order.service.add(*Service.objects.filter(pk__in=data['service']))
             serializer = OrderSerializer(order)
         except:
