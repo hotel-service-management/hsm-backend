@@ -37,13 +37,18 @@ class BookingAdmin(admin.ModelAdmin):
                 'fields': ('num_person', 'owner')
             }
         ),
+        (
+            'Status', {
+                'fields': ('status',)
+            }
+        ),
     )
 
     inlines = [BookingInline]
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['id', 'owner', 'start_date', 'end_date', 'num_person']
+            return ['id', 'start_date', 'end_date', 'owner']
         return list()
 
 class BookingDetailAdmin(admin.ModelAdmin):
