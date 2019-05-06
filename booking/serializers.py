@@ -28,12 +28,24 @@ class BookingDetailSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     detail = BookingDetailSerializer(many=True, read_only=True)
     review = ReviewSerializer(read_only=True)
+    room = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all(), write_only=True, many=True)
 
     def to_representation(self, instance):
         representation = super(BookingSerializer, self).to_representation(instance)
         representation['start_date'] = instance.start_date.strftime("%d %B %Y")
         representation['end_date'] = instance.end_date.strftime("%d %B %Y")
         return representation
+
+    def create(self, validated_data):
+        rooms = validated_data.pop('room')
+
+        booking = Booking.objects.create(**validated_data)
+
+        for r in rooms:
+            detail = BookingDetail.objects.create(room=r, booking=booking)
+            booking.detail.add(detail)
+
+        return booking
 
     class Meta:
         model = Booking
