@@ -34,9 +34,9 @@ class OrdersView(generics.RetrieveAPIView, generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        queryset = self.get_object()
 
-        serializer = OrderSerializer(queryset, many=True)
+        serializer = OrderSerializer(queryset, many=False)
         return Response(serializer.data)
 
 

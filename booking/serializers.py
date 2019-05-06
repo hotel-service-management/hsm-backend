@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from booking.models import Booking, BookingDetail, Room, Privilege
+from review.serializers import ReviewSerializer
 
 
 class RoomSerializer(serializers.ModelSerializer):
@@ -26,6 +27,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
 
 class BookingSerializer(serializers.ModelSerializer):
     detail = BookingDetailSerializer(many=True, read_only=True)
+    review = ReviewSerializer(read_only=True)
 
     def to_representation(self, instance):
         representation = super(BookingSerializer, self).to_representation(instance)
