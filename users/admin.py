@@ -53,9 +53,7 @@ class CustomUserAdmin(UserAdmin):
         (
             'Personal Info',
             {
-                'fields': (
-                    'first_name', 'last_name', 'gender', 'address',
-                )
+                'fields': ('first_name', 'last_name', 'gender', 'address', 'phone_number')
             }
         ),
         (

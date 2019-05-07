@@ -3,6 +3,7 @@ from django.db import models
 from review.models import Review
 from users.models import User
 
+import datetime
 
 class Booking(models.Model):
     start_date = models.DateField()
@@ -34,7 +35,7 @@ class Booking(models.Model):
         return (self.end_date - self.start_date).days
 
     def total_price(self):
-        return sum([i.room.price * self.nights() for i in BookingDetail.objects.all().filter(booking=self.id)])
+        return sum([i.total_price for i in BookingDetail.objects.filter(booking_id=self.id)])
 
     def __str__(self):
         return "(%s) %s" % (self.id, self.owner)
@@ -42,6 +43,58 @@ class Booking(models.Model):
 
 class RoomType(models.Model):
     title = models.CharField(max_length=100)
+
+    def amount(self):
+        return len(Room.objects.filter(type_id=self.id))
+
+    def min_price(self):
+        try:
+            return min([i.price for i in Room.objects.filter(type_id=self.id)])
+        except ValueError:
+            return 0
+
+    def max_price(self):
+        try:
+            return max([i.price for i in Room.objects.filter(type_id=self.id)])
+        except ValueError:
+            return 0
+
+    def available_today(self):
+        total = 0
+
+        for i in Room.objects.filter(type=self.id):
+            # Each room in current room type
+            if i.id not in [j.room.id for j in BookingDetail.objects.all()]:
+                total += 1
+            else:
+                status = True
+                for j in BookingDetail.objects.filter(room_id=i.id):
+                    # Each booking detail of selected room
+                    if j.booking.start_date <= datetime.datetime.now().date() < j.booking.end_date:
+                        status = False
+                        break
+                total += status
+
+        return total
+
+    def min_price_available(self):
+        try:
+            return min([i.price for i in Room.objects.filter(type_id=self.id) if self.is_available(i)])
+        except ValueError:
+            return 0
+
+    def max_price_available(self):
+        try:
+            return max([i.price for i in Room.objects.filter(type_id=self.id) if self.is_available(i)])
+        except ValueError:
+            return 0
+
+    @classmethod
+    def is_available(self, room):
+        for i in BookingDetail.objects.filter(room_id=room.id):
+            if i.booking.start_date <= datetime.datetime.now().date() < i.booking.end_date:
+                return False
+        return True
 
     def __str__(self):
         return self.title
