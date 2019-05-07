@@ -23,7 +23,7 @@ class ReviewView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.Upd
         return Response({'success': True}, status=200)
 
 
-class ReviewsView(generics.ListAPIView, generics.CreateAPIView):
+class ReviewsView(generics.ListAPIView, generics.CreateAPIView, generics.UpdateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = (permissions.IsAuthenticated,)
