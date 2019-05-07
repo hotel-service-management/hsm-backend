@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from booking.models import Booking, BookingDetail, Room, Privilege
 from order.serializers import OrderSerializer
@@ -49,6 +50,11 @@ class BookingSerializer(serializers.ModelSerializer):
             booking.detail.add(detail)
 
         return booking
+
+    def validate(self, data):
+        if data['start_date'] >= data['end_date']:
+            raise serializers.ValidationError("Check-in Date must be after Check-out Date")
+        return data
 
     class Meta:
         model = Booking
