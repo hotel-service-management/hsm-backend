@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from booking.models import Booking, BookingDetail, Room, Privilege
+from booking.models import Booking, BookingDetail, Room, Privilege, PrivilegeType, RoomType
 from order.models import Order
 
 
@@ -76,5 +76,7 @@ class PrivilegeAdmin(admin.ModelAdmin):
 
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(BookingDetail, BookingDetailAdmin)
+admin.site.register(RoomType)
 admin.site.register(Room, RoomAdmin)
+admin.site.register(PrivilegeType)
 admin.site.register(Privilege, PrivilegeAdmin)
