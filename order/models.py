@@ -2,7 +2,6 @@ from django.db import models
 
 from booking.models import BookingDetail
 
-
 class Service(models.Model):
     type_choices = (
         ('01', 'Food'),
@@ -19,13 +18,12 @@ class Service(models.Model):
     class Meta:
         db_table = 'services'
 
-
 class Order(models.Model):
     booking_detail = models.ForeignKey(BookingDetail, on_delete=models.CASCADE)
     service = models.ManyToManyField(Service)
     total_price = models.FloatField(default=0)
 
-    def calculate_total_price(self):
+    def get_total_price(self):
         return sum([i.price for i in self.service.all()])
 
     def __str__(self):

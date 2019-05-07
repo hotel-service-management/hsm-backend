@@ -69,7 +69,6 @@ class BookingAdmin(admin.ModelAdmin):
     inlines = [BookingInline, PaymentInline]
 
     def save_model(self, request, obj, form, change):
-        """ NOTES: MUST DOUBLE-SAVE TO REALLY UPDATE TOTAL_PRICE """
         if obj.status == 0:
             obj.check_in = None
             obj.check_out = None
@@ -79,15 +78,19 @@ class BookingAdmin(admin.ModelAdmin):
                 obj.check_in = datetime.datetime.now()
             obj.check_out = None
 
-        elif obj.status == 2:
-            if obj.check_out is None:
-                obj.check_out = datetime.datetime.now()
-
-        for i in BookingDetail.objects.filter(booking_id=obj.id):
-            i.total_price = i.get_total_price()
-            i.save()
+        elif obj.status == 2 and obj.check_out is None:
+            obj.check_out = datetime.datetime.now()
 
         super().save_model(request, obj, form, change)
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for obj in formset.deleted_objects:
+            obj.delete()
+        for instance in instances:
+            instance.total_price = instance.get_total_price()
+            instance.save()
+        formset.save_m2m()
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -101,11 +104,8 @@ class BookingDetailAdmin(admin.ModelAdmin):
     inlines = [PrivilegeInline, OrderInline]
 
     def save_model(self, request, obj, form, change):
-        """ NOTES: MUST DOUBLE-SAVE TO REALLY UPDATE TOTAL_PRICE """
+        obj.total_price = obj.get_total_price()
         super().save_model(request, obj, form, change)
-        BookingDetail.objects.filter(pk=obj.id).update(
-            total_price=BookingDetail.objects.get(pk=obj.id).get_total_price()
-        )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:

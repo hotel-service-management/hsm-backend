@@ -8,6 +8,7 @@ from order.models import Order, Service
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'booking_detail', 'total_price']
     readonly_fields = ['total_price']
+    raw_id_fields = ['booking_detail']
 
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
@@ -16,9 +17,8 @@ class OrderAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         """ NOTES: MUST DOUBLE-SAVE TO REALLY UPDATE TOTAL_PRICE """
         super().save_model(request, obj, form, change)
-        Order.objects.filter(pk=obj.id).update(
-            total_price=sum([i.price for i in Order.objects.get(pk=obj.id).service.all()])
-        )
+        obj.total_price = obj.get_total_price()
+        super().save_model(request, obj, form, change)
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['id', 'type', 'title', 'price']
