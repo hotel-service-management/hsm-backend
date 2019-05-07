@@ -51,6 +51,7 @@ class BookingDetail(models.Model):
 
     booking = models.ForeignKey(Booking, related_name='detail', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='room', on_delete=models.CASCADE)
+    total_price = models.FloatField(default=0)
 
     def start_date(self):
         return self.booking.start_date
@@ -61,7 +62,7 @@ class BookingDetail(models.Model):
     def nights(self):
         return (self.end_date() - self.start_date()).days
 
-    def total_price(self):
+    def get_total_price(self):
         return self.room.price * self.nights()
 
     def __str__(self):
