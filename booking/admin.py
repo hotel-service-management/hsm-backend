@@ -125,6 +125,7 @@ class RoomTypeAdmin(admin.ModelAdmin):
 class PrivilegeAdmin(admin.ModelAdmin):
     list_display = ['id', 'booking', 'type', 'title', 'status']
     list_filter = ['type', 'status']
+    raw_id_fields = ['booking']
 
 
 class PrivilegeTypeAdmin(admin.ModelAdmin):
