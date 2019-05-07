@@ -37,9 +37,14 @@ class BookingsView(generics.ListAPIView, generics.CreateAPIView):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        serializer = BookingSerializer(data=request.data)
+        data = request.data
+
+        data['owner'] = request.user.id
+
+        serializer = BookingSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({'error': serializer.errors}, status=status.HTTP_200_OK)
 

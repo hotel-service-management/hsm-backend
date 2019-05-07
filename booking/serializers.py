@@ -54,7 +54,8 @@ class BookingSerializer(serializers.ModelSerializer):
         booking = Booking.objects.create(**validated_data)
 
         for r in rooms:
-            detail = BookingDetail.objects.create(room=r, booking=booking)
+            night = (booking.end_date - booking.start_date).days
+            detail = BookingDetail.objects.create(room=r, booking=booking, total_price=r.price * night)
             booking.detail.add(detail)
 
         return booking
