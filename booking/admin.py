@@ -2,16 +2,16 @@ from django.contrib import admin
 
 from booking.models import Booking, BookingDetail, Room, Privilege, PrivilegeType, RoomType
 from order.models import Order
+from payment.models import Payment
 
 class BookingInline(admin.StackedInline):
     model = BookingDetail
     extra = 0
-
+    readonly_fields = ['total_price']
 
 class PrivilegeInline(admin.StackedInline):
     model = Privilege
     extra = 1
-
 
 class OrderInline(admin.StackedInline):
     model = Order
@@ -22,6 +22,10 @@ class OrderInline(admin.StackedInline):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+class PaymentInline(admin.StackedInline):
+    model = Payment
+    extra = 0
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = ['id', 'owner', 'start_date', 'end_date', 'nights', 'total_price', 'num_person', 'status']
@@ -48,7 +52,13 @@ class BookingAdmin(admin.ModelAdmin):
         ),
     )
 
-    inlines = [BookingInline]
+    inlines = [BookingInline, PaymentInline]
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        for i in BookingDetail.objects.filter(booking_id=obj.id):
+            i.total_price = i.get_total_price()
+            i.save()
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -68,6 +78,9 @@ class BookingDetailAdmin(admin.ModelAdmin):
             total_price=BookingDetail.objects.get(pk=obj.id).get_total_price()
         )
 
+class RoomTypeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'title', 'amount', 'min_price', 'max_price', 'available_today', 'min_price_available', 'max_price_available']
+
 class RoomAdmin(admin.ModelAdmin):
     list_display = ['id', 'floor', 'type', 'price', 'room_number']
     list_per_page = 10
@@ -80,7 +93,7 @@ class PrivilegeAdmin(admin.ModelAdmin):
 
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(BookingDetail, BookingDetailAdmin)
-admin.site.register(RoomType)
+admin.site.register(RoomType, RoomTypeAdmin)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(PrivilegeType)
 admin.site.register(Privilege, PrivilegeAdmin)
