@@ -5,6 +5,7 @@ from users.models import User
 
 import datetime
 
+
 class Booking(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()

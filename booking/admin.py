@@ -6,14 +6,17 @@ from booking.models import Booking, BookingDetail, Room, Privilege, PrivilegeTyp
 from order.models import Order
 from payment.models import Payment
 
+
 class BookingInline(admin.StackedInline):
     model = BookingDetail
     extra = 0
     readonly_fields = ['total_price']
 
+
 class PrivilegeInline(admin.StackedInline):
     model = Privilege
     extra = 1
+
 
 class OrderInline(admin.StackedInline):
     model = Order
@@ -25,12 +28,15 @@ class OrderInline(admin.StackedInline):
     def has_delete_permission(self, request, obj=None):
         return False
 
+
 class PaymentInline(admin.StackedInline):
     model = Payment
     extra = 0
 
+
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'owner', 'start_date', 'end_date', 'nights', 'total_price', 'num_person', 'status', 'check_in', 'check_out']
+    list_display = ['id', 'owner', 'start_date', 'end_date', 'nights', 'total_price', 'num_person', 'status',
+                    'check_in', 'check_out']
     list_per_page = 10
     search_fields = ['id']
     list_filter = ['status', 'start_date', 'end_date']
@@ -53,6 +59,11 @@ class BookingAdmin(admin.ModelAdmin):
                 'fields': ('status', 'check_in', 'check_out')
             }
         ),
+        (
+            'Review', {
+                'fields': ('review',)
+            }
+        )
     )
 
     inlines = [BookingInline, PaymentInline]
@@ -76,8 +87,9 @@ class BookingAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['id', 'start_date', 'end_date', 'owner', 'check_in', 'check_out']
+            return ['id', 'start_date', 'end_date', 'owner', 'check_in', 'check_out', 'review']
         return ['status', 'check_in', 'check_out']
+
 
 class BookingDetailAdmin(admin.ModelAdmin):
     list_display = ['id', 'booking', 'room', 'start_date', 'end_date', 'nights', 'total_price']
@@ -96,6 +108,7 @@ class BookingDetailAdmin(admin.ModelAdmin):
             return ['id', 'booking', 'total_price']
         return ['total_price']
 
+
 class RoomAdmin(admin.ModelAdmin):
     list_display = ['id', 'floor', 'type', 'price', 'room_number']
     list_per_page = 10
@@ -103,17 +116,22 @@ class RoomAdmin(admin.ModelAdmin):
     search_fields = ['room_number']
     list_filter = ['floor', 'type']
 
+
 class RoomTypeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'amount', 'min_price', 'max_price', 'available_today', 'min_price_available', 'max_price_available']
+    list_display = ['id', 'title', 'amount', 'min_price', 'max_price', 'available_today', 'min_price_available',
+                    'max_price_available']
     search_fields = ['title']
+
 
 class PrivilegeAdmin(admin.ModelAdmin):
     list_display = ['id', 'booking', 'type', 'title', 'status']
     list_filter = ['type', 'status']
 
+
 class PrivilegeTypeAdmin(admin.ModelAdmin):
     list_display = ['id', 'title']
     search_fields = ['title']
+
 
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(BookingDetail, BookingDetailAdmin)
