@@ -58,11 +58,6 @@ class BookingAdmin(admin.ModelAdmin):
             'Status', {
                 'fields': ('status', 'check_in', 'check_out')
             }
-        ),
-        (
-            'Review', {
-                'fields': ('review',)
-            }
         )
     )
 
