@@ -20,10 +20,12 @@ class OrderAdmin(admin.ModelAdmin):
         obj.total_price = obj.get_total_price()
         super().save_model(request, obj, form, change)
 
+
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['id', 'type', 'title', 'price']
     list_filter = ['type']
     search_fields = ['title']
+
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Service, ServiceAdmin)
