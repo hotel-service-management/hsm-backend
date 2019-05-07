@@ -29,6 +29,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         data = validated_data
 
+        data['email'] = data['email'].lower().strip()
+
         user = User.objects.create(address=data['address'], email=data['email'], first_name=data['first_name'],
                                    last_name=data['last_name'], username=data['username'])
         user.set_password(data['password'])
@@ -98,6 +100,9 @@ class LoginSerializer(serializers.Serializer):
         # The `validate` method should return a dictionary of validated data.
         # This is the data that is passed to the `create` and `update` methods
         # that we will see later on.
+
+        user.email = user.email.lower().strip()
+
         return {
             'email': user.email,
             'username': user.username,
@@ -121,7 +126,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'password', 'first_name', 'last_name', 'gender', 'address', 'phone_number',)
+        fields = (
+            'id', 'email', 'username', 'password', 'first_name', 'last_name', 'gender', 'address', 'phone_number',)
 
         # The `read_only_fields` option is an alternative for explicitly
         # specifying the field with `read_only=True` like we did for password
