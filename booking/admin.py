@@ -73,11 +73,15 @@ class BookingAdmin(admin.ModelAdmin):
         if obj.status == 0:
             obj.check_in = None
             obj.check_out = None
-        if obj.status == 1:
-            obj.check_in = datetime.datetime.now()
+
+        elif obj.status == 1:
+            if obj.check_in is None:
+                obj.check_in = datetime.datetime.now()
             obj.check_out = None
-        if obj.status == 2:
-            obj.check_out = datetime.datetime.now()
+
+        elif obj.status == 2:
+            if obj.check_out is None:
+                obj.check_out = datetime.datetime.now()
 
         for i in BookingDetail.objects.filter(booking_id=obj.id):
             i.total_price = i.get_total_price()
