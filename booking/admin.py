@@ -35,13 +35,14 @@ class PaymentInline(admin.StackedInline):
 
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'owner', 'start_date', 'end_date', 'nights', 'total_price', 'num_person', 'status',
+    list_display = ['id', 'owner', 'created_at', 'start_date', 'end_date', 'nights', 'total_price', 'num_person', 'status',
                     'check_in', 'check_out']
     list_per_page = 10
     search_fields = ['id']
     list_filter = ['status', 'start_date', 'end_date']
     list_editable = ['status']
     raw_id_fields = ['owner']
+
 
     fieldsets = (
         (
@@ -57,6 +58,11 @@ class BookingAdmin(admin.ModelAdmin):
         (
             'Status', {
                 'fields': ('status', 'check_in', 'check_out')
+            }
+        ),
+        (
+            'Timestamp', {
+                'fields': ('created_at', 'updated_at')
             }
         )
     )
@@ -76,6 +82,7 @@ class BookingAdmin(admin.ModelAdmin):
         elif obj.status == 2 and obj.check_out is None:
             obj.check_out = datetime.datetime.now()
 
+
         super().save_model(request, obj, form, change)
 
     def save_formset(self, request, form, formset, change):
@@ -88,9 +95,12 @@ class BookingAdmin(admin.ModelAdmin):
         formset.save_m2m()
 
     def get_readonly_fields(self, request, obj=None):
+        readonly_fields = ['check_in', 'check_out', 'created_at', 'updated_at']
         if obj:
-            return ['id', 'start_date', 'end_date', 'owner', 'check_in', 'check_out', 'review']
-        return ['status', 'check_in', 'check_out']
+            readonly_fields += ['start_date', 'end_date', 'owner']
+        else:
+            readonly_fields += ['status']
+        return readonly_fields
 
 
 class BookingDetailAdmin(admin.ModelAdmin):
@@ -126,6 +136,20 @@ class PrivilegeAdmin(admin.ModelAdmin):
     list_display = ['id', 'booking', 'type', 'title', 'status']
     list_filter = ['type', 'status']
     raw_id_fields = ['booking']
+    list_editable = ['status']
+
+    fieldsets = (
+        (
+            None, {
+                'fields': ('booking', 'type', 'title', 'detail', 'status')
+            }
+        ),
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['booking', 'type', 'title']
+        return ['status']
 
 
 class PrivilegeTypeAdmin(admin.ModelAdmin):
