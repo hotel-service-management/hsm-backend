@@ -39,6 +39,7 @@ class BookingSerializer(serializers.ModelSerializer):
     review = ReviewSerializer(read_only=True)
     room = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all(), write_only=True, many=True)
     night = serializers.IntegerField(source='nights', read_only=True)
+    status = serializers.CharField(source='get_status_display', read_only=True)
 
     def to_representation(self, instance):
         representation = super(BookingSerializer, self).to_representation(instance)
