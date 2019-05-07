@@ -40,6 +40,7 @@ class BookingSerializer(serializers.ModelSerializer):
     room = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all(), write_only=True, many=True)
     night = serializers.IntegerField(source='nights', read_only=True)
     status = serializers.CharField(source='get_status_display', read_only=True)
+    status_id = serializers.IntegerField(source='status', write_only=True, required=False)
 
     def to_representation(self, instance):
         representation = super(BookingSerializer, self).to_representation(instance)
@@ -59,8 +60,9 @@ class BookingSerializer(serializers.ModelSerializer):
         return booking
 
     def validate(self, data):
-        if data['start_date'] >= data['end_date']:
-            raise serializers.ValidationError("Check-in Date must be after Check-out Date")
+        if 'start_date' in data.keys() and 'end_date' in data.keys():
+            if data['start_date'] >= data['end_date']:
+                raise serializers.ValidationError("Check-in Date must be after Check-out Date")
         return data
 
     class Meta:
