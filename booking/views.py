@@ -93,7 +93,7 @@ class RoomsView(generics.ListAPIView, generics.CreateAPIView):
         end_date = request.query_params['end_date']
 
         booked = set(values['detail__room_id'] for values in Booking.objects.filter(
-            start_date__lte=start_date, end_date__gte=end_date).values(
+            start_date__lte=start_date, end_date__gte=end_date, status__in=[0, 1, 2]).values(
             'detail__room_id'))
         queryset = self.get_queryset().exclude(id__in=booked)
         serializer = RoomSerializer(queryset, many=True)

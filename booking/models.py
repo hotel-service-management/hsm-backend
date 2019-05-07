@@ -15,7 +15,8 @@ class Booking(models.Model):
     status_choices = (
         (0, 'Reserved'),
         (1, 'Checked In'),
-        (2, 'Checked Out')
+        (2, 'Checked Out'),
+        (3, 'Cancelled')
     )
     status = models.SmallIntegerField(choices=status_choices, verbose_name='Booking Status', default=0)
     review = models.OneToOneField(Review, on_delete=models.CASCADE, null=True, blank=True)
