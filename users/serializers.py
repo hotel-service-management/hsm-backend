@@ -127,7 +127,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'email', 'username', 'password', 'first_name', 'last_name', 'gender', 'address', 'phone_number',)
+            'username', 'email', 'password', 'first_name', 'last_name', 'gender', 'address', 'phone_number',)
 
         # The `read_only_fields` option is an alternative for explicitly
         # specifying the field with `read_only=True` like we did for password
@@ -136,7 +136,7 @@ class UserSerializer(serializers.ModelSerializer):
         # password field needed the `min_length` and
         # `max_length` properties, but that isn't the case for the token
         # field.
-        read_only_fields = ('token',)
+        read_only_fields = ('id', 'token',)
 
     def update(self, instance, validated_data):
         """Performs an update on a User."""
