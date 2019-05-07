@@ -1,13 +1,19 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from booking.models import Booking, BookingDetail, Room, Privilege
+from booking.models import Booking, BookingDetail, Room, Privilege, RoomType
 from order.serializers import OrderSerializer
 from review.serializers import ReviewSerializer
 
 
+class RoomTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoomType
+        fields = '__all__'
+
+
 class RoomSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(source='get_type_display', read_only=True)
+    type = RoomTypeSerializer()
 
     class Meta:
         model = Room

@@ -19,6 +19,9 @@ class Booking(models.Model):
     status = models.SmallIntegerField(choices=status_choices, verbose_name='Booking Status', default=0)
     review = models.OneToOneField(Review, on_delete=models.CASCADE, null=True, blank=True)
 
+    check_in = models.DateTimeField(null=True)
+    check_out = models.DateTimeField(null=True)
+
     # A timestamp representing when this object was created.
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 
