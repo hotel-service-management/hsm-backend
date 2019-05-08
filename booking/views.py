@@ -19,6 +19,10 @@ class BookingView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.Up
         queryset = self.get_object()
 
         serializer = BookingSerializer(queryset, many=False)
+
+        if queryset.owner.id != request.user.id:
+            return Response({})
+
         return Response(serializer.data)
 
     def delete(self, request, *args, **kwargs):
@@ -119,6 +123,14 @@ class PrivilegeView(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def retrieve(self, request, *args, **kwargs):
+        try:
+            booking_owner = BookingDetail.objects.get(pk=kwargs.get('pk')).booking.owner.id
+
+            if request.user.id != booking_owner:
+                return Response([], status=status.HTTP_401_UNAUTHORIZED)
+        except BookingDetail.DoesNotExist:
+            return Response([])
+
         queryset = self.get_queryset().filter(booking__id=kwargs.get('pk'))
 
         serializer = PrivilegeSerializer(queryset, many=True)

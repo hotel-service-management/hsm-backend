@@ -13,6 +13,12 @@ class ReviewView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.Upd
     permission_classes = (permissions.IsAuthenticated,)
 
     def retrieve(self, request, *args, **kwargs):
+        try:
+            if Booking.objects.get(pk=kwargs.get('pk')).owner.id != request.user.id:
+                return Response({})
+        except Booking.DoesNotExist:
+            return Response({})
+
         queryset = self.get_object()
 
         serializer = ReviewSerializer(queryset, many=False)
@@ -33,10 +39,12 @@ class ReviewsView(generics.ListAPIView, generics.CreateAPIView, generics.UpdateA
         serializer = ReviewSerializer(queryset, many=True)
         return Response(serializer.data)
 
-
     def post(self, request, *args, **kwargs):
         data = request.data
         booking_id = data.pop('booking_id')
+
+        if Booking.objects.get(pk=booking_id).owner.id != request.user.id:
+            return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
         serializer = ReviewSerializer(data=data)
         if serializer.is_valid():
