@@ -33,6 +33,7 @@ class ReviewsView(generics.ListAPIView, generics.CreateAPIView, generics.UpdateA
         serializer = ReviewSerializer(queryset, many=True)
         return Response(serializer.data)
 
+
     def post(self, request, *args, **kwargs):
         data = request.data
         booking_id = data.pop('booking_id')

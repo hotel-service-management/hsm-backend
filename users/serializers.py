@@ -16,6 +16,13 @@ class RegistrationSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    phone_number = serializers.CharField(
+        min_length=4,
+        max_length=10,
+        required=True,
+        write_only=True
+    )
+
     # The client should not be able to send a token along with a registration
     # request. Making `token` read-only handles that for us.
     # token = serializers.CharField(max_length=255, read_only=True)
@@ -24,7 +31,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         # List all of the fields that could possibly be included in a request
         # or response, including fields specified explicitly above.
-        fields = ['email', 'username', 'password', 'address', 'first_name', 'last_name']
+        fields = ['email', 'username', 'password', 'address', 'first_name', 'last_name', 'phone_number']
 
     def create(self, validated_data):
         data = validated_data
