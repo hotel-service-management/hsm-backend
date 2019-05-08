@@ -112,6 +112,12 @@ class Room(models.Model):
 
     type = models.ForeignKey(RoomType, related_name='room_type', null=True, on_delete=models.DO_NOTHING, default=None)
 
+    def available_today(self):
+        for i in BookingDetail.objects.filter(room_id=self.id):
+            if i.booking.start_date <= datetime.datetime.now().date() < i.booking.end_date:
+                return False
+        return True
+
     def __str__(self):
         return "(%s) %s" % (self.room_number, self.type)
 

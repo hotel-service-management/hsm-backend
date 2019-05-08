@@ -119,7 +119,7 @@ class BookingDetailAdmin(admin.ModelAdmin):
 
 
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ['id', 'floor', 'type', 'price', 'room_number']
+    list_display = ['id', 'floor', 'type', 'price', 'room_number', 'available_today']
     list_per_page = 10
 
     search_fields = ['room_number']
