@@ -24,6 +24,15 @@ class ReviewView(generics.RetrieveAPIView, generics.DestroyAPIView, generics.Upd
         serializer = ReviewSerializer(queryset, many=False)
         return Response(serializer.data)
 
+    def patch(self, request, *args, **kwargs):
+        try:
+            if Booking.objects.get(pk=kwargs.get('pk')).owner.id != request.user.id:
+                return Response({})
+        except Booking.DoesNotExist:
+            return Response({})
+
+        super().patch(request, *args, **kwargs)
+
     def delete(self, request, *args, **kwargs):
         self.destroy(request, *args, **kwargs)
         return Response({'success': True}, status=200)
