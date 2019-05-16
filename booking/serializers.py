@@ -72,7 +72,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
 
 class PrivilegeSerializer(serializers.ModelSerializer):
-    # type = serializers.CharField(source='get_type_display', read_only=True)
+    type = serializers.CharField(read_only=True)
 
     class Meta:
         model = Privilege
