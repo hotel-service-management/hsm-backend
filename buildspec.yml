@@ -12,20 +12,17 @@ phases:
       - mv ./kubectl /usr/local/bin/kubectl
   build: # Build Docker image and tag it with the commit sha
     commands:
-      # - docker build . -t $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      # - docker tag $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      # - docker build . -t $IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION -f static.Dockerfile
-      # - docker tag $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      - echo "Build"
+      - docker build . -t $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker tag $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker build . -t $IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION -f static.Dockerfile
+      - docker tag $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION
   post_build: # Push the Docker image to the ECR
     commands:
       - $(aws ecr get-login --no-include-email --region ap-southeast-1)
       - export KUBECONFIG=$HOME/.kube/config
-      - aws sts get-caller-identity
       - aws eks update-kubeconfig --name hsm-cluster --region ap-southeast-1
       - kubectl config use-context arn:aws:eks:ap-southeast-1:361698339280:cluster/hsm-cluster
-      - kubectl get po -n hsm
-      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      # - kubectl set image -n hsm deployment/hsm-backend hsm-backend=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      # - kubectl set image -n hsm deployment/hsm-static hsm-static=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - kubectl set image -n hsm deployment/hsm-backend hsm-backend=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - kubectl set image -n hsm deployment/hsm-static hsm-static=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME-static:$CODEBUILD_RESOLVED_SOURCE_VERSION
