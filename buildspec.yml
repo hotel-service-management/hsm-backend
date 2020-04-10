@@ -23,6 +23,7 @@ phases:
   post_build: # Push the Docker image to the ECR
     commands:
       - $(aws ecr get-login --no-include-email --region ap-southeast-1)
+      - export KUBECONFIG=$HOME/.kube/config
       - aws eks update-kubeconfig --name hsm-cluster
       - kubectl config use-context arn:aws:eks:ap-southeast-1:361698339280:cluster/hsm-cluster
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
